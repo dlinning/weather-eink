@@ -54,8 +54,8 @@ export function windDirectionToString(degree: number | undefined | null): string
  * @returns Resolves with structured data, an error object, or null.
  */
 export async function updateOpenMeteoWeather(
-	latitude: string = "42.5629869",
-	longitude: string = "-87.9425408"
+	latitude: string,
+	longitude: string
 ): Promise<OpenMeteoResult | OpenMeteoError | null> {
 	const url = "https://api.open-meteo.com/v1/forecast";
 	const params = new URLSearchParams({
@@ -63,7 +63,8 @@ export async function updateOpenMeteoWeather(
 		longitude,
 		hourly: "apparent_temperature,precipitation_probability",
 		current: "temperature_2m,apparent_temperature,wind_speed_10m,wind_direction_10m,relative_humidity_2m,precipitation",
-		timezone: "America/Chicago",
+		// Get the client's timezone
+		timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
 		forecast_days: "2",
 		wind_speed_unit: "mph",
 		temperature_unit: "fahrenheit",

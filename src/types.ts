@@ -1,11 +1,15 @@
 export type AppState = {
 	isLoading: boolean;
 
+	/**
+	 * If `true`, then ?lng=...&lat=... must be provided
+	 */
+	needsGeo: boolean;
 	data: OpenMeteoResult | null;
 };
 
 export interface ForecastItem {
-	datetime: string;
+	datetime: string | Date;
 	feels_like: number;
 	precip: number;
 }
@@ -29,6 +33,8 @@ export interface OpenMeteoResult {
 	current: WeatherAttributes;
 	forecast: ForecastItem[];
 	timezone?: string;
+
+	error?: null;
 }
 
 export interface OpenMeteoError {
