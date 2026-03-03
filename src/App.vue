@@ -61,8 +61,6 @@ onMounted(loadData);
 			</RowCol>
 
 			<ForecastTileList />
-
-			<!-- <ForecastChart /> -->
 		</RowCol>
 	</div>
 </template>
