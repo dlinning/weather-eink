@@ -7,23 +7,11 @@ defineProps({
 	value: String,
 	unit: String
 });
-
-function formatForecastHour(dt: Date | string) {
-	const d = new Date(dt);
-	let h = d.getHours();
-	if (h % 12 == 0) {
-		h = 12;
-	} else if (h > 12) {
-		h -= 12;
-	}
-
-	return `${h} ${d.getHours() < 12 ? "AM" : "PM"}`;
-}
 </script>
 
 <template>
 	<div v-if="item != undefined" class="card">
-		<div class="label">{{ formatForecastHour(item.datetime) }}</div>
+		<div class="label">{{ item.label }}</div>
 		<div class="value">{{ item.feels_like }}°</div>
 		<span v-if="item.precip > 1" class="subValue">{{ item.precip }}%</span>
 	</div>

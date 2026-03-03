@@ -2,7 +2,8 @@
  * Types and Interfaces
  */
 
-import type { OpenMeteoResult, OpenMeteoError, WeatherAttributes, ForecastItem } from "@/types";
+import type { ForecastItem, OpenMeteoError, OpenMeteoResult, WeatherAttributes } from "@/types";
+import { DateTimeToHourLabel } from "./helpers";
 
 /**
  * Internal interface for the raw API response shape
@@ -119,6 +120,9 @@ export async function updateOpenMeteoWeather(
 
 			hourlyForecast.push({
 				datetime: hourly.time[i]!,
+				// Force to Zulu, since it comes in as "YYYY-MM-DDTHH:MM" without timezone
+				// data
+				label: DateTimeToHourLabel(hourly.time[i]! + "Z"),
 				feels_like: Math.round(hourly.apparent_temperature[i]!),
 				precip: Math.round(hourly.precipitation_probability[i]!)
 			});

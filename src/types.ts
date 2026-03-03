@@ -10,6 +10,7 @@ export type AppState = {
 
 export interface ForecastItem {
 	datetime: string | Date;
+	label: string;
 	feels_like: number;
 	precip: number;
 }

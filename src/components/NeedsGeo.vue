@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { AppCtx } from "@/store";
+import { AppCtx } from "@/scripts/store";
 </script>
 
 <template>

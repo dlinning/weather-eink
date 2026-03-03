@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import ForecastTile from "@/components/ForecastTile.vue";
 import RowCol from "@/components/RowCol.vue";
-import { AppCtx } from "@/store";
+import { AppCtx } from "@/scripts/store";
 import type { ForecastItem } from "@/types";
 
 function getZonedDateTime(date: Date | string) {
