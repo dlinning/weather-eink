@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import ForecastTile from "@/components/ForecastTile.vue";
-import RowCol from "@/components/RowCol.vue";
 import { AppCtx } from "@/scripts/store";
 import type { ForecastItem } from "@/types";
 
@@ -17,20 +16,20 @@ function getZonedDateTime(date: Date | string) {
 
 var shownHours: ForecastItem[] = [];
 if (AppCtx.data?.forecast != null) {
-	shownHours = AppCtx.data?.forecast.slice(0, 6).map((h) => {
-		return {
-			...h,
-			// Convert to local datetime
-			datetime: getZonedDateTime(h.datetime)
-		};
-	});
+	shownHours = AppCtx.data?.forecast;
 }
 </script>
 
 <template>
-	<RowCol gap-size="0.5rem" dir="row">
+	<div class="root">
 		<ForecastTile v-for="hr in shownHours" :key="hr.datetime.toString()" :item="hr" />
-	</RowCol>
+	</div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.root {
+	display: grid;
+	gap: 0.5rem;
+	grid-template-columns: repeat(6, 1fr);
+}
+</style>
