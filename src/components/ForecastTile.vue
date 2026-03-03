@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { PropType } from "vue";
 import type { ForecastItem } from "@/types";
+import type { PropType } from "vue";
 
 defineProps({
 	item: Object as PropType<ForecastItem>,
@@ -11,7 +11,13 @@ defineProps({
 function formatForecastHour(dt: Date | string) {
 	const d = new Date(dt);
 	let h = d.getHours();
-	return `${h > 12 ? h - 12 : h} ${d.getHours() < 12 ? "AM" : "PM"}`;
+	if (h % 12 == 0) {
+		h = 12;
+	} else if (h > 12) {
+		h -= 12;
+	}
+
+	return `${h} ${d.getHours() < 12 ? "AM" : "PM"}`;
 }
 </script>
 
