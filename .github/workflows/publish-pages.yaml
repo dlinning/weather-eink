@@ -1,40 +1,37 @@
-name: GitHub Pages
+name: Deploy to GitHub Pages
 
 on:
     push:
         branches:
             - master
-    workflow_dispatch:
+
+permissions:
+    contents: write
 
 jobs:
-    deploy:
+    build-and-deploy:
         runs-on: ubuntu-latest
-        permissions:
-            contents: write
-        concurrency:
-            group: ${{ github.workflow }}
-        steps:
-            - uses: actions/checkout@v4
 
-            - name: Setup Node
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+
+            - name: Setup Node.js
               uses: actions/setup-node@v4
               with:
-                  node-version: "24"
+                  node-version: 24
+                  cache: "yarn"
 
-            - name: Cache dependencies
-              uses: actions/cache@v4
+            - name: Install and Build 🏗️
+              run: |
+                  yarn install
+                  yarn build
+
+            - name: Add CNAME
+              run: echo "weather-eink.smallsites.dev" > dist/CNAME
+
+            - name: Deploy
+              uses: JamesIves/github-pages-deploy-action@v4
               with:
-                  path: ~yarn
-                  key: ${{ runner.os }}-node-${{ hashFiles('**/yarn.lock') }}
-                  restore-keys: |
-                      ${{ runner.os }}-node-
-
-            - run: yarn install
-            - run: yarn build
-
-            - name: deploy
-              uses: peaceiris/actions-gh-pages@v4
-              if: github.ref == 'refs/heads/master'
-              with:
-                  github_token: ${{ secrets.GITHUB_TOKEN }}
-                  publish_dir: ./dist
+                  folder: dist
+                  branch: gh-pages
