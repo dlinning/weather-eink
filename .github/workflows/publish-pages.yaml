@@ -1,14 +1,40 @@
-name: Build Vue
-on: [push]
+name: GitHub Pages
+
+on:
+    push:
+        branches:
+            - master
+    workflow_dispatch:
+
 jobs:
-    build_vue:
+    deploy:
         runs-on: ubuntu-latest
-        name: Build Vue
+        permissions:
+            contents: write
+        concurrency:
+            group: ${{ github.workflow }}
         steps:
-            - uses: actions/checkout@v2
-            - id: Build-Vue
-              uses: xRealNeon/VuePagesAction@1.0.1
+            - uses: actions/checkout@v4
+
+            - name: Setup Node
+              uses: actions/setup-node@v4
               with:
-                  username: "dlinning"
-                  reponame: "weather-eink"
-                  token: ${{ secrets.GITHUB_TOKEN }} # Leave this line unchanged
+                  node-version: "24"
+
+            - name: Cache dependencies
+              uses: actions/cache@v4
+              with:
+                  path: ~yarn
+                  key: ${{ runner.os }}-node-${{ hashFiles('**/yarn.lock') }}
+                  restore-keys: |
+                      ${{ runner.os }}-node-
+
+            - run: yarn install
+            - run: yarn build
+
+            - name: deploy
+              uses: peaceiris/actions-gh-pages@v4
+              if: github.ref == 'refs/heads/main'
+              with:
+                  github_token: ${{ secrets.GITHUB_TOKEN }}
+                  publish_dir: ./dist
