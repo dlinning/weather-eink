@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import ForecastChart from "@/components/ForecastChart.vue";
 import ForecastTile from "@/components/ForecastTile.vue";
 import ForecastTileList from "@/components/ForecastTileList.vue";
 import Loader from "@/components/Loader.vue";
@@ -60,6 +61,8 @@ onMounted(loadData);
 			</RowCol>
 
 			<ForecastTileList />
+
+			<ForecastChart />
 		</RowCol>
 	</div>
 </template>
