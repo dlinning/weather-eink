@@ -40,7 +40,7 @@ defineProps({
 }
 
 .value {
-	font-size: 2rem;
+	font-size: 2.25rem;
 	font-weight: bold;
 }
 

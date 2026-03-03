@@ -6,7 +6,7 @@ import RowCol from "@/components/RowCol.vue";
 import { updateOpenMeteoWeather } from "@/scripts/get-data";
 import { AppCtx } from "@/scripts/store";
 import { onMounted } from "vue";
-import ForecastChart from "./components/ForecastChart.vue";
+import ForecastTileList from "./components/ForecastTileList.vue";
 import NeedsGeo from "./components/NeedsGeo.vue";
 
 async function loadData() {
@@ -60,9 +60,9 @@ onMounted(loadData);
 				<MainTile label="Precip" :value="AppCtx.data?.current.precip" unit="%" />
 			</RowCol>
 
-			<!-- <ForecastTileList /> -->
+			<ForecastTileList />
 
-			<ForecastChart />
+			<!-- <ForecastChart /> -->
 		</RowCol>
 	</div>
 </template>
