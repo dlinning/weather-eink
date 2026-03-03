@@ -57,7 +57,7 @@ onMounted(loadData);
 					unit="mph"
 				/>
 
-				<MainTile label="Temp" :value="AppCtx.data?.current.temperature" unit="°F" />
+				<MainTile label="Precip" :value="AppCtx.data?.current.precip" unit="%" />
 			</RowCol>
 
 			<ForecastTileList />
