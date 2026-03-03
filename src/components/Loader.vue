@@ -1,13 +1,8 @@
 <script setup lang="ts">
-import { AppCtx } from "@/store";
-
-defineProps({
-	loading: Boolean
-});
 </script>
 
 <template>
-	<div v-if="AppCtx.isLoading" class="root">
+	<div class="root">
 		<div class="spinner"></div>
 	</div>
 </template>

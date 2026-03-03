@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import ForecastChart from "@/components/ForecastChart.vue";
-import ForecastTile from "@/components/ForecastTile.vue";
 import ForecastTileList from "@/components/ForecastTileList.vue";
 import Loader from "@/components/Loader.vue";
 import MainTile from "@/components/MainTile.vue";
@@ -9,6 +7,7 @@ import RowCol from "@/components/RowCol.vue";
 import { updateOpenMeteoWeather } from "@/get-data";
 import { AppCtx } from "@/store";
 import { onMounted } from "vue";
+import NeedsGeo from "./components/NeedsGeo.vue";
 
 async function loadData() {
 	//#region Get Params
@@ -44,8 +43,9 @@ onMounted(loadData);
 	<div id="root">
 		<MetaInfo />
 		<Loader v-if="AppCtx.isLoading" />
+		<NeedsGeo v-if="AppCtx.needsGeo" />
 
-		<RowCol class="main" v-if="!AppCtx.isLoading" gap-size="1rem" dir="col">
+		<RowCol class="main" v-if="!AppCtx.isLoading && !AppCtx.needsGeo" gap-size="1rem" dir="col">
 			<RowCol gap-size="1rem" dir="row">
 				<MainTile label="Temp" :value="AppCtx.data?.current.temperature" unit="°F" />
 
@@ -62,7 +62,7 @@ onMounted(loadData);
 
 			<ForecastTileList />
 
-			<ForecastChart />
+			<!-- <ForecastChart /> -->
 		</RowCol>
 	</div>
 </template>
