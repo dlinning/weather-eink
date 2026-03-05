@@ -98,6 +98,8 @@ export async function updateOpenMeteoWeather(
 			.split(".")[0];
 
 		// --- Load "Current" data ---
+		const precipAsOneDecimal = parseFloat(data.current.precipitation.toFixed(1));
+
 		const currentAttrs: WeatherAttributes = {
 			unit_of_measurement: "°F",
 			icon: "mdi:weather-partly-cloudy",
@@ -106,7 +108,7 @@ export async function updateOpenMeteoWeather(
 			wind_speed: Math.round(data.current.wind_speed_10m),
 			wind_direction: windDirectionToString(data.current.wind_direction_10m),
 			feels_like: Math.round(data.current.apparent_temperature),
-			precip: data.current.precipitation,
+			precip: precipAsOneDecimal <= 0.1 ? 0 : precipAsOneDecimal,
 			last_synced: nowLastSyncStr!
 		};
 
