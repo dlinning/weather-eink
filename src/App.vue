@@ -57,7 +57,7 @@ onMounted(loadData);
 					unit="mph"
 				/>
 
-				<MainTile label="Precip" :value="AppCtx.data?.current.precip" unit="%" />
+				<MainTile label="Precip" :value="AppCtx.data?.current.precip" unit="in" />
 			</RowCol>
 
 			<ForecastTileList />
