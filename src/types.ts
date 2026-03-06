@@ -1,12 +1,26 @@
 export type AppState = {
 	isLoading: boolean;
 
-	/**
-	 * If `true`, then ?lng=...&lat=... must be provided
-	 */
-	needsGeo: boolean;
+	userGeo: IGeoData | null;
 	data: OpenMeteoResult | null;
 };
+
+export interface IGeoData {
+	/**
+	 * Label, unused
+	 */
+	name?: string;
+
+	/**
+	 * @example "-82.1332"
+	 */
+	longitude: string;
+
+	/**
+	 * @example "41.342"
+	 */
+	latitude: string;
+}
 
 export interface ForecastItem {
 	datetime: string | Date;

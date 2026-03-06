@@ -5,6 +5,6 @@ export const AppCtx = reactive<AppState>({
 	// Assume loading by default
 	isLoading: true,
 	//
-	needsGeo: false,
+	userGeo: null,
 	data: null
 });

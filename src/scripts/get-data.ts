@@ -2,7 +2,8 @@
  * Types and Interfaces
  */
 
-import type { ForecastItem, OpenMeteoError, OpenMeteoResult, WeatherAttributes } from "@/types";
+import type { ForecastItem, IGeoData, OpenMeteoError, OpenMeteoResult, WeatherAttributes } from "@/types";
+import { GetFromCache, StoreToCache } from "./cache";
 import { DateTimeToHourLabel } from "./helpers";
 
 /**
@@ -54,10 +55,10 @@ export function windDirectionToString(degree: number | undefined | null): string
  * @param longitude Longitude to query (default is a hard‑coded location).
  * @returns Resolves with structured data, an error object, or null.
  */
-export async function updateOpenMeteoWeather(
-	latitude: string,
-	longitude: string
-): Promise<OpenMeteoResult | OpenMeteoError | null> {
+export async function updateOpenMeteoWeather({
+	longitude,
+	latitude
+}: IGeoData): Promise<OpenMeteoResult | OpenMeteoError | null> {
 	const url = "https://api.open-meteo.com/v1/forecast";
 	const params = new URLSearchParams({
 		latitude,
@@ -73,7 +74,10 @@ export async function updateOpenMeteoWeather(
 	});
 
 	try {
-		const response = await fetch(`${url}?${params.toString()}`);
+		const response = await fetch(`${url}?${params.toString()}`, {
+			// Only wait 1000ms
+			signal: AbortSignal.timeout(1_000)
+		});
 
 		if (!response.ok) {
 			const errorText = await response.text();
@@ -83,7 +87,10 @@ export async function updateOpenMeteoWeather(
 
 		const data: MeteoRawResponse = await response.json();
 
-		if (!data.current) return null;
+		if (!data.current) {
+			// No data returned
+			return null;
+		}
 
 		// --- Get current date info ---
 		const now = new Date();
@@ -132,12 +139,22 @@ export async function updateOpenMeteoWeather(
 			if (hourlyForecast.length >= 12) break;
 		}
 
-		return {
+		var asResult: OpenMeteoResult = {
 			current: currentAttrs,
 			forecast: hourlyForecast,
 			timezone: data.timezone
 		};
+
+		// Cache for future loads
+		StoreToCache("last-weather", asResult);
+
+		return asResult;
 	} catch (e) {
+		if ((e as Error).name == "TimeoutError") {
+			console.log("Timed out, returning cached");
+			// Just used the cached value, since we timed out
+			return GetFromCache("last-weather");
+		}
 		return { error: "API not available" };
 	}
 }

@@ -3,7 +3,7 @@ import { AppCtx } from "@/scripts/store";
 </script>
 
 <template>
-	<div v-if="AppCtx.needsGeo" class="root">
+	<div v-if="AppCtx.userGeo == null" class="root">
 		<b>Missing <kbd>lat</kbd> and/or <kbd>lng</kbd> query params</b>
 	</div>
 </template>

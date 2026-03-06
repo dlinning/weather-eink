@@ -7,24 +7,23 @@ import { updateOpenMeteoWeather } from "@/scripts/get-data";
 import { AppCtx } from "@/scripts/store";
 import { onMounted } from "vue";
 import ForecastTileList from "./components/ForecastTileList.vue";
-import NeedsGeo from "./components/NeedsGeo.vue";
+import NeedsGeoMessage from "./components/NeedsGeoMessage.vue";
+import { GetUserPosition } from "./scripts/get-position";
 
 async function loadData() {
-	//#region Get Params
-	var searchParams = new URLSearchParams(document.location.search);
+	var geoData = GetUserPosition();
 
-	var lng = searchParams.get("lng");
-	var lat = searchParams.get("lat");
-
-	if (lng == undefined || lat == undefined || lng?.length > 0 == false || lat?.length > 0 == false) {
-		// Exit early, bad state
-		AppCtx.needsGeo = true;
+	if (geoData == null) {
+		// Needs geo data, so exit early on bad state
+		AppCtx.userGeo = null;
 		AppCtx.isLoading = false;
+
 		return;
 	}
-	//#endregion Get Params
 
-	var apiData = await updateOpenMeteoWeather(lat, lng);
+	AppCtx.userGeo = geoData;
+
+	var apiData = await updateOpenMeteoWeather(geoData);
 
 	if (apiData != null && apiData.error == null) {
 		AppCtx.data = apiData;
@@ -43,9 +42,9 @@ onMounted(loadData);
 	<div id="root">
 		<MetaInfo />
 		<Loader v-if="AppCtx.isLoading" />
-		<NeedsGeo v-if="AppCtx.needsGeo" />
+		<NeedsGeoMessage />
 
-		<RowCol class="main" v-if="!AppCtx.isLoading && !AppCtx.needsGeo" gap-size="1rem" dir="col">
+		<RowCol class="main" v-if="!AppCtx.isLoading && AppCtx.userGeo != null" gap-size="1rem" dir="col">
 			<RowCol gap-size="1rem" dir="row">
 				<MainTile label="Temp" :value="AppCtx.data?.current.temperature" unit="°F" />
 
