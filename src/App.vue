@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import Loader from "@/components/Loader.vue";
-import MainTile from "@/components/MainTile.vue";
 import MetaInfo from "@/components/MetaInfo.vue";
 import RowCol from "@/components/RowCol.vue";
 import { updateOpenMeteoWeather } from "@/scripts/get-data";
@@ -8,6 +7,7 @@ import { AppCtx } from "@/scripts/store";
 import { onMounted } from "vue";
 import ForecastTileList from "./components/ForecastTileList.vue";
 import NeedsGeoMessage from "./components/NeedsGeoMessage.vue";
+import TopRow from "./components/TopRow.vue";
 import { GetUserPosition } from "./scripts/get-position";
 
 async function loadData() {
@@ -45,20 +45,7 @@ onMounted(loadData);
 		<NeedsGeoMessage />
 
 		<RowCol class="main" v-if="!AppCtx.isLoading && AppCtx.userGeo != null" gap-size="1rem" dir="col">
-			<RowCol gap-size="1rem" dir="row">
-				<MainTile label="Temp" :value="AppCtx.data?.current.temperature" unit="°F" />
-
-				<MainTile label="Feels Like" :value="AppCtx.data?.current.feels_like" unit="°F" />
-
-				<MainTile
-					:label="'Wind ' + AppCtx.data?.current.wind_direction"
-					:value="AppCtx.data?.current.wind_speed"
-					unit="mph"
-				/>
-
-				<MainTile label="Precip" :value="AppCtx.data?.current.precip" unit="in" />
-			</RowCol>
-
+			<TopRow />
 			<ForecastTileList />
 		</RowCol>
 	</div>
