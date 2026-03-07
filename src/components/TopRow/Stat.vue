@@ -16,7 +16,7 @@ defineProps<{
 
 <style scoped>
 .label {
-	font-size: 1.4em;
+	font-size: 1.25em;
 	opacity: 0.7;
 }
 

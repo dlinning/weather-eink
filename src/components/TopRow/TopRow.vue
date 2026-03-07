@@ -21,7 +21,7 @@ const tiles = {
 				<WeatherConditionIcon
 					:code="AppCtx.data?.current.code!"
 					:time-of-day="AppCtx.data?.current.time!"
-					size="5rem"
+					size="4.5rem"
 				/>
 			</div>
 		</MainTile>
@@ -30,11 +30,11 @@ const tiles = {
 			<Stat label="Feels Like" :value="tiles.feelsLike" unit="°F" />
 		</MainTile>
 
-		<MainTile>
+		<MainTile flex>
 			<Stat label="Temp" :value="tiles.realTemp" unit="°F" size="sub" />
 		</MainTile>
 
-		<MainTile>
+		<MainTile flex>
 			<Stat
 				:label="'Wind ' + tiles.windDir"
 				:value="tiles.windSpeed"
@@ -43,7 +43,7 @@ const tiles = {
 			/>
 		</MainTile>
 
-		<MainTile>
+		<MainTile flex>
 			<Stat label="Humidity" :value="tiles.humidity" unit="%" size="sub" />
 		</MainTile>
 	</RowCol>
