@@ -1,4 +1,4 @@
-import type { IGeoData } from "@/types";
+import type { IGeoData } from "@/types/app-ctx";
 import { GetFromCache, StoreToCache } from "./cache";
 
 /**

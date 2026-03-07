@@ -1,4 +1,5 @@
-import type { IGeoData, OpenMeteoResult } from "@/types";
+import type { IGeoData } from "@/types/app-ctx";
+import type { OpenMeteoResult } from "@/types/meteo-api";
 
 type CacheMapping = {
 	"last-weather": OpenMeteoResult;

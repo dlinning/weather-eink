@@ -1,4 +1,4 @@
-import type { AppState } from "@/types";
+import type { AppState } from "@/types/app-ctx";
 import { reactive } from "vue";
 
 export const AppCtx = reactive<AppState>({

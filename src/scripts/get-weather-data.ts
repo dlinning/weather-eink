@@ -1,52 +1,9 @@
-/**
- * Types and Interfaces
- */
-
-import type { ForecastItem, IGeoData, OpenMeteoError, OpenMeteoResult, WeatherAttributes } from "@/types";
+import { windDirectionToString } from "@/mappers/wind-direction-to-string";
+import type { ForecastItem, IGeoData } from "@/types/app-ctx";
+import type { MeteoRawResponse, OpenMeteoError, OpenMeteoResult, WeatherAttributes } from "@/types/meteo-api";
+import type { MeteoDateTime, MeteoTimeString, MeteoWeatherCodes } from "@/types/string-types";
 import { GetFromCache, StoreToCache } from "./cache";
 import { DateTimeToHourLabel } from "./helpers";
-
-/**
- * Internal interface for the raw API response shape
- */
-interface MeteoRawResponse {
-	timezone: string;
-	current?: {
-		temperature_2m: number;
-		relative_humidity_2m: number;
-		wind_speed_10m: number;
-		wind_direction_10m: number;
-		apparent_temperature: number;
-		precipitation: number;
-	};
-	hourly: {
-		time: string[];
-		apparent_temperature: number[];
-		precipitation_probability: number[];
-	};
-}
-
-/**
- * Converts wind direction in degrees (0-360) to a cardinal direction string.
- *
- * @param degree Degrees from 0 to 360. If missing, returns "N/A".
- * @returns Cardinal direction (e.g. "N", "NE", "E", etc.) or "N/A" when input is not a number.
- */
-export function windDirectionToString(degree: number | undefined | null): string {
-	if (degree === null || degree === undefined) return "N/A";
-
-	const normalizedDegree = degree % 360;
-
-	if (normalizedDegree > 337.5 || normalizedDegree <= 22.5) return "N";
-	if (normalizedDegree <= 67.5) return "NE";
-	if (normalizedDegree <= 112.5) return "E";
-	if (normalizedDegree <= 157.5) return "SE";
-	if (normalizedDegree <= 202.5) return "S";
-	if (normalizedDegree <= 247.5) return "SW";
-	if (normalizedDegree <= 292.5) return "W";
-	if (normalizedDegree <= 337.5) return "NW";
-	return "N";
-}
 
 /**
  * Fetches weather data from OpenMeteo and updates the sensor state.
@@ -63,8 +20,10 @@ export async function updateOpenMeteoWeather({
 	const params = new URLSearchParams({
 		latitude,
 		longitude,
-		hourly: "apparent_temperature,precipitation_probability",
-		current: "temperature_2m,apparent_temperature,wind_speed_10m,wind_direction_10m,relative_humidity_2m,precipitation",
+		hourly: "apparent_temperature,precipitation_probability,weather_code",
+		current:
+			"temperature_2m,apparent_temperature,wind_speed_10m,wind_direction_10m,relative_humidity_2m,precipitation,weather_code",
+		daily: "sunrise,sunset",
 		// Get the client's timezone
 		timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
 		forecast_days: "2",
@@ -96,7 +55,7 @@ export async function updateOpenMeteoWeather({
 		const now = new Date();
 
 		// Format: YYYY-MM-DDTHH:00
-		const nowForecastStr = `${now.toISOString().split(":")[0]}:00`;
+		const nowForecastStr = `${now.toISOString().split(":")[0]}:00` as MeteoTimeString;
 
 		// Format: YYYY-MM-DDTHH:MM:SS (Local ISO-like string)
 		const nowLastSyncStr = new Date(now.getTime() - now.getTimezoneOffset() * 60000)
@@ -128,12 +87,13 @@ export async function updateOpenMeteoWeather({
 			if (i <= nowIdx) continue;
 
 			hourlyForecast.push({
-				datetime: hourly.time[i]!,
+				datetime: hourly.time[i]! as MeteoDateTime,
 				// Force to Zulu, since it comes in as "YYYY-MM-DDTHH:MM" without timezone
 				// data
 				label: DateTimeToHourLabel(hourly.time[i]! + "Z"),
 				feels_like: Math.round(hourly.apparent_temperature[i]!),
-				precip: Math.round(hourly.precipitation_probability[i]!)
+				precip: Math.round(hourly.precipitation_probability[i]!),
+				code: (hourly.weather_code[i] ?? "0").toString() as MeteoWeatherCodes
 			});
 
 			if (hourlyForecast.length >= 12) break;
@@ -155,6 +115,7 @@ export async function updateOpenMeteoWeather({
 			// Just used the cached value, since we timed out
 			return GetFromCache("last-weather");
 		}
+		console.log("Error", e);
 		return { error: "API not available" };
 	}
 }

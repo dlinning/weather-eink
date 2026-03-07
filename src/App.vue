@@ -2,7 +2,7 @@
 import Loader from "@/components/Loader.vue";
 import MetaInfo from "@/components/MetaInfo.vue";
 import RowCol from "@/components/RowCol.vue";
-import { updateOpenMeteoWeather } from "@/scripts/get-data";
+import { updateOpenMeteoWeather } from "@/scripts/get-weather-data";
 import { AppCtx } from "@/scripts/store";
 import { onMounted } from "vue";
 import ForecastTileList from "./components/ForecastTileList.vue";
@@ -59,7 +59,7 @@ onMounted(loadData);
 
 	position: relative;
 
-	height: calc(100vh - 1rem);
+	height: calc(100vh - 0.5rem);
 	max-height: 480px;
 	overflow-y: auto;
 	/* border: 1px solid #efefef; */

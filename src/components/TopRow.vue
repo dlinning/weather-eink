@@ -8,7 +8,7 @@ const tiles = {
 	realTemp: AppCtx.data?.current.temperature ?? 0,
 	windSpeed: AppCtx.data?.current.wind_speed ?? 0,
 	windDir: AppCtx.data?.current.wind_direction ?? "",
-	precipAmount: AppCtx.data?.current.precip ?? 0
+	humidity: AppCtx.data?.current.relative_humidity ?? 0
 };
 </script>
 
@@ -24,6 +24,6 @@ const tiles = {
 			:size="tiles.windSpeed < 5 ? 'sub' : ''"
 		/>
 
-		<MainTile label="Precip" :value="tiles.precipAmount" unit="in" :size="tiles.precipAmount < 0.1 ? 'sub' : ''" />
+		<MainTile label="Humidity" :value="tiles.humidity" unit="%" size="sub" />
 	</RowCol>
 </template>

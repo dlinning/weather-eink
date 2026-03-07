@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import type { ForecastItem } from "@/types";
+import type { ForecastItem } from "@/types/app-ctx";
 import type { PropType } from "vue";
+import WeatherConditionIcon from "./WeatherConditionIcon.vue";
 
 defineProps({
 	item: Object as PropType<ForecastItem>,
@@ -12,8 +13,9 @@ defineProps({
 <template>
 	<div v-if="item != undefined" class="card">
 		<div class="label">{{ item.label }}</div>
+		<WeatherConditionIcon :code="item.code" :timeOfDay="item.datetime" />
 		<div class="value">{{ item.feels_like }}°</div>
-		<span v-if="item.precip > 1" class="subValue">{{ item.precip }}%</span>
+		<span v-if="item.precip > 0" class="subValue">{{ item.precip }}%</span>
 	</div>
 </template>
 
@@ -35,17 +37,17 @@ defineProps({
 }
 
 .label {
-	font-size: 1.5rem;
+	font-size: 1.2rem;
 	opacity: 0.7;
 }
 
 .value {
-	font-size: 2.25rem;
+	font-size: 2rem;
 	font-weight: bold;
 }
 
 .subValue {
-	font-size: 1.5rem;
+	font-size: 1.25rem;
 	opacity: 0.75;
 }
 </style>
