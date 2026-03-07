@@ -1,3 +1,5 @@
+import type { MeteoDateTime, MeteoTimeString } from "@/types/string-types";
+
 export function DateTimeToHourLabel(dt: Date | string): string {
 	const d = new Date(dt);
 
@@ -40,4 +42,15 @@ export function MinAndMax<T extends number | object>(items: T[], prop?: KeysOfTy
 	}
 
 	return res;
+}
+
+/**
+ * Gets just the "HH:MM" data from {@link time}
+ */
+export function GetHourMinuteFromTime(time: MeteoDateTime | MeteoTimeString): MeteoTimeString {
+	if (time.includes("T")) {
+		return time.split("T")[1] as MeteoTimeString;
+	}
+
+	return time as MeteoTimeString;
 }

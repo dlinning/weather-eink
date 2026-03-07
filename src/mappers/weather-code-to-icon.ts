@@ -1,31 +1,19 @@
-import type { MeteoDateTime, MeteoTimeString, MeteoWeatherCodes } from "@/types/string-types";
+import type { MeteoWeatherCodes } from "@/types/string-types";
 
 /**
  * Takes the {@link code} and returns the name of an SVG icon
  * for the code.
  *
- * {@link time} is used for day/night handling
+ * {@link isDaytime} is used for day/night handling
  */
-export function weatherCodeToIcon(code: MeteoWeatherCodes, time: MeteoTimeString | MeteoDateTime): string {
-	//#region Day/Night detection
-	let hour: number = 12;
-	if (time.length == 5) {
-		// HH:MM
-		hour = parseInt(time.split(":")[0]!);
-	} else if (time.length == 16) {
-		// YYYY-MM-DDTHH:MM
-		hour = parseInt(time.split("T")[1]!.split(":")[0]!);
-	}
-	const isDay = hour < 18;
-	//#endregion
-
+export function weatherCodeToIcon(code: MeteoWeatherCodes, isDaytime: boolean): string {
 	switch (code) {
 		case "0":
-			return `clear_${isDay ? "day" : "night"}.svg`;
+			return `clear_${isDaytime ? "day" : "night"}.svg`;
 		case "1":
 		case "2":
 		case "3":
-			return `mostly_clear_${isDay ? "day" : "night"}.svg`;
+			return `mostly_clear_${isDaytime ? "day" : "night"}.svg`;
 		case "45":
 		case "48":
 			return "fog.svg";
@@ -62,6 +50,6 @@ export function weatherCodeToIcon(code: MeteoWeatherCodes, time: MeteoTimeString
 		case "99":
 			return "thunderstorm_hail.svg";
 		default:
-			return `clear_${isDay ? "day" : "night"}.svg`;
+			return `clear_${isDaytime ? "day" : "night"}.svg`;
 	}
 }

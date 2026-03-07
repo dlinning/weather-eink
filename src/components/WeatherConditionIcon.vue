@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { weatherCodeToIcon } from "@/mappers/weather-code-to-icon";
+import { IsDaylight } from "@/scripts/is-daylight";
 import type { MeteoDateTime, MeteoTimeString, MeteoWeatherCodes } from "@/types/string-types";
 
-defineProps<{
+const props = defineProps<{
 	/**
 	 * One of the allowed Weather Codes
 	 */
@@ -17,12 +18,13 @@ defineProps<{
 	 */
 	timeOfDay: MeteoDateTime | MeteoTimeString;
 }>();
+
+const isDaylight = IsDaylight(props.timeOfDay);
 </script>
 
 <template>
 	<div class="iconRoot">
-		<!-- TODO: Render proper PNG from `condition` to mapped icon name -->
-		<img :src="`/icons/${weatherCodeToIcon(code, timeOfDay)}`" class="icon" />
+		<img :src="`/icons/${weatherCodeToIcon(code, isDaylight)}`" class="icon" />
 	</div>
 </template>
 
@@ -36,5 +38,6 @@ defineProps<{
 .icon {
 	width: 100%;
 	height: 100%;
+	transform: scale(1.25);
 }
 </style>

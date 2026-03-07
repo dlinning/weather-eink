@@ -1,7 +1,7 @@
 import { windDirectionToString } from "@/mappers/wind-direction-to-string";
 import type { ForecastItem, IGeoData } from "@/types/app-ctx";
 import type { MeteoRawResponse, OpenMeteoError, OpenMeteoResult, WeatherAttributes } from "@/types/meteo-api";
-import type { MeteoDateTime, MeteoTimeString, MeteoWeatherCodes } from "@/types/string-types";
+import type { MeteoDateTime, MeteoWeatherCodes } from "@/types/string-types";
 import { GetFromCache, StoreToCache } from "./cache";
 import { DateTimeToHourLabel } from "./helpers";
 
@@ -51,37 +51,29 @@ export async function updateOpenMeteoWeather({
 			return null;
 		}
 
-		// --- Get current date info ---
-		const now = new Date();
-
-		// Format: YYYY-MM-DDTHH:00
-		const nowForecastStr = `${now.toISOString().split(":")[0]}:00` as MeteoTimeString;
-
-		// Format: YYYY-MM-DDTHH:MM:SS (Local ISO-like string)
-		const nowLastSyncStr = new Date(now.getTime() - now.getTimezoneOffset() * 60000)
-			.toISOString()
-			.replace("Z", "")
-			.split(".")[0];
-
 		// --- Load "Current" data ---
-		const precipAsOneDecimal = parseFloat(data.current.precipitation.toFixed(1));
+		const current = data.current;
+		const precipAsOneDecimal = parseFloat(current.precipitation.toFixed(1));
 
 		const currentAttrs: WeatherAttributes = {
 			unit_of_measurement: "°F",
 			icon: "mdi:weather-partly-cloudy",
-			temperature: Math.round(data.current.temperature_2m),
-			relative_humidity: Math.round(data.current.relative_humidity_2m),
-			wind_speed: Math.round(data.current.wind_speed_10m),
-			wind_direction: windDirectionToString(data.current.wind_direction_10m),
-			feels_like: Math.round(data.current.apparent_temperature),
+			temperature: Math.round(current.temperature_2m),
+			relative_humidity: Math.round(current.relative_humidity_2m),
+			wind_speed: Math.round(current.wind_speed_10m),
+			wind_direction: windDirectionToString(current.wind_direction_10m),
+			feels_like: Math.round(current.apparent_temperature),
 			precip: precipAsOneDecimal <= 0.1 ? 0 : precipAsOneDecimal,
-			last_synced: nowLastSyncStr!
+			last_synced: current.time
 		};
+
+		// programmimng
+		const currentTimeRoundedToHour = current.time.replace(/T(\d+):\d\d$/, "T$1:00") as MeteoDateTime;
 
 		// --- Update Hourly forecast ---
 		const hourly = data.hourly;
 		const hourlyForecast: ForecastItem[] = [];
-		const nowIdx = hourly.time.indexOf(nowForecastStr);
+		const nowIdx = hourly.time.indexOf(currentTimeRoundedToHour);
 
 		for (let i = 0; i < hourly.time.length; i++) {
 			if (i <= nowIdx) continue;
@@ -90,7 +82,7 @@ export async function updateOpenMeteoWeather({
 				datetime: hourly.time[i]! as MeteoDateTime,
 				// Force to Zulu, since it comes in as "YYYY-MM-DDTHH:MM" without timezone
 				// data
-				label: DateTimeToHourLabel(hourly.time[i]! + "Z"),
+				label: DateTimeToHourLabel(hourly.time[i]!),
 				feels_like: Math.round(hourly.apparent_temperature[i]!),
 				precip: Math.round(hourly.precipitation_probability[i]!),
 				code: (hourly.weather_code[i] ?? "0").toString() as MeteoWeatherCodes
@@ -102,7 +94,8 @@ export async function updateOpenMeteoWeather({
 		var asResult: OpenMeteoResult = {
 			current: currentAttrs,
 			forecast: hourlyForecast,
-			timezone: data.timezone
+			timezone: data.timezone,
+			daily: data.daily
 		};
 
 		// Cache for future loads

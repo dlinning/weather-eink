@@ -1,5 +1,5 @@
 import type { ForecastItem } from "@/types/app-ctx";
-import type { MeteoDateString, MeteoDateTime, MeteoTimeString, MeteoWeatherCodes } from "@/types/string-types";
+import type { MeteoDateString, MeteoDateTime, MeteoWeatherCodes } from "@/types/string-types";
 
 export interface WeatherAttributes {
 	unit_of_measurement: string;
@@ -20,6 +20,8 @@ export interface OpenMeteoResult {
 	current: WeatherAttributes;
 	forecast: ForecastItem[];
 	timezone?: string;
+
+	daily: MeteoRawResponse["daily"];
 
 	error?: null;
 }
@@ -44,7 +46,7 @@ export interface MeteoRawResponse {
 		weatherCode: MeteoWeatherCodes;
 	};
 	hourly: {
-		time: MeteoTimeString[];
+		time: MeteoDateTime[];
 		apparent_temperature: number[];
 		precipitation_probability: number[];
 		weather_code: MeteoWeatherCodes[];
