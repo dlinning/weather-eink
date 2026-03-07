@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import ForecastTile from "@/components/ForecastTile.vue";
+import ForecastTile from "@/components/ForecastRow/ForecastTile.vue";
 import { AppCtx } from "@/scripts/store";
 import type { ForecastItem } from "@/types/app-ctx";
 

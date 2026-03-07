@@ -1,13 +1,13 @@
 <script setup lang="ts">
+import ForecastTileList from "@/components/ForecastRow/ForecastTileList.vue";
 import Loader from "@/components/Loader.vue";
 import MetaInfo from "@/components/MetaInfo.vue";
 import RowCol from "@/components/RowCol.vue";
+import TopRow from "@/components/TopRow/TopRow.vue";
 import { updateOpenMeteoWeather } from "@/scripts/get-weather-data";
 import { AppCtx } from "@/scripts/store";
 import { onMounted } from "vue";
-import ForecastTileList from "./components/ForecastTileList.vue";
 import NeedsGeoMessage from "./components/NeedsGeoMessage.vue";
-import TopRow from "./components/TopRow.vue";
 import { GetUserPosition } from "./scripts/get-position";
 
 async function loadData() {

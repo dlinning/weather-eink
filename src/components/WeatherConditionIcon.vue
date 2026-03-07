@@ -2,6 +2,7 @@
 import { weatherCodeToIcon } from "@/mappers/weather-code-to-icon";
 import { IsDaylight } from "@/scripts/is-daylight";
 import type { MeteoDateTime, MeteoTimeString, MeteoWeatherCodes } from "@/types/string-types";
+import type { CSSProperties } from "vue";
 
 const props = defineProps<{
 	/**
@@ -17,13 +18,15 @@ const props = defineProps<{
 	 * @example 20:12 // Will use "8pm", ignoring the
 	 */
 	timeOfDay: MeteoDateTime | MeteoTimeString;
+
+	size: CSSProperties["width"];
 }>();
 
 const isDaylight = IsDaylight(props.timeOfDay);
 </script>
 
 <template>
-	<div class="iconRoot">
+	<div class="iconRoot" :style="{ width: size }">
 		<img :src="`/icons/${weatherCodeToIcon(code, isDaylight)}`" class="icon" />
 	</div>
 </template>
@@ -31,7 +34,6 @@ const isDaylight = IsDaylight(props.timeOfDay);
 <style scoped>
 .iconRoot {
 	aspect-ratio: 1/1;
-	width: 2.5rem;
 	margin-inline: auto;
 }
 

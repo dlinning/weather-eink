@@ -2,8 +2,9 @@ import type { ForecastItem } from "@/types/app-ctx";
 import type { MeteoDateString, MeteoDateTime, MeteoWeatherCodes } from "@/types/string-types";
 
 export interface WeatherAttributes {
-	unit_of_measurement: string;
-	icon: string;
+	time: MeteoDateTime;
+	code: MeteoWeatherCodes;
+
 	temperature?: number;
 	relative_humidity?: number;
 
@@ -11,7 +12,6 @@ export interface WeatherAttributes {
 	wind_direction?: string;
 	feels_like?: number;
 	precip?: number;
-	last_synced: string;
 	timezone?: string;
 	forecast?: ForecastItem[];
 }
@@ -43,7 +43,7 @@ export interface MeteoRawResponse {
 		wind_direction_10m: number;
 		apparent_temperature: number;
 		precipitation: number;
-		weatherCode: MeteoWeatherCodes;
+		weather_code: MeteoWeatherCodes;
 	};
 	hourly: {
 		time: MeteoDateTime[];

@@ -56,15 +56,14 @@ export async function updateOpenMeteoWeather({
 		const precipAsOneDecimal = parseFloat(current.precipitation.toFixed(1));
 
 		const currentAttrs: WeatherAttributes = {
-			unit_of_measurement: "°F",
-			icon: "mdi:weather-partly-cloudy",
+			code: current.weather_code ?? "0",
+			time: current.time,
 			temperature: Math.round(current.temperature_2m),
 			relative_humidity: Math.round(current.relative_humidity_2m),
 			wind_speed: Math.round(current.wind_speed_10m),
 			wind_direction: windDirectionToString(current.wind_direction_10m),
 			feels_like: Math.round(current.apparent_temperature),
-			precip: precipAsOneDecimal <= 0.1 ? 0 : precipAsOneDecimal,
-			last_synced: current.time
+			precip: precipAsOneDecimal <= 0.1 ? 0 : precipAsOneDecimal
 		};
 
 		// programmimng
