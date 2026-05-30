@@ -23,7 +23,7 @@ export async function updateOpenMeteoWeather({
 		hourly: "apparent_temperature,precipitation_probability,weather_code",
 		current:
 			"temperature_2m,apparent_temperature,wind_speed_10m,wind_direction_10m,relative_humidity_2m,precipitation,weather_code",
-		daily: "sunrise,sunset",
+		daily: "sunrise,sunset,uv_index_max,uv_index_clear_sky_max",
 		// Get the client's timezone
 		timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
 		forecast_days: "2",
@@ -88,6 +88,13 @@ export async function updateOpenMeteoWeather({
 			});
 
 			if (hourlyForecast.length >= 12) break;
+		}
+
+		if (Array.isArray(data.daily.uv_index_max)) {
+			data.daily.uv_index_max = data.daily.uv_index_max.map((v) => Math.round(v));
+		}
+		if (Array.isArray(data.daily.uv_index_clear_sky_max)) {
+			data.daily.uv_index_clear_sky_max = data.daily.uv_index_clear_sky_max.map((v) => Math.round(v));
 		}
 
 		var asResult: OpenMeteoResult = {

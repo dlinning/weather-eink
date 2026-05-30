@@ -62,7 +62,9 @@ onMounted(loadData);
 	height: calc(100vh - 0.5rem);
 	max-height: 480px;
 	overflow-y: auto;
-	/* border: 1px solid #efefef; */
+
+	/* Helper line to see the e-Ink screen */
+	/* border: 1px dashed red; */
 }
 
 .main {

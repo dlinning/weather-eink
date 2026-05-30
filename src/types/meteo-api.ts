@@ -55,5 +55,8 @@ export interface MeteoRawResponse {
 		time: MeteoDateString[];
 		sunrise: MeteoDateTime[];
 		sunset: MeteoDateTime[];
+
+		uv_index_max: number[];
+		uv_index_clear_sky_max: number[];
 	};
 }

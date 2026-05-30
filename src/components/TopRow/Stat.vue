@@ -3,7 +3,7 @@ defineProps<{
 	label?: string;
 	value: number | string | undefined;
 	unit: string;
-	size?: "sub" | "";
+	size?: "sub" | "" | "mini";
 }>();
 </script>
 
@@ -28,11 +28,14 @@ defineProps<{
 	justify-self: flex-end;
 
 	font-weight: bold;
-	/* text-align: center; */
 }
 
 .value.sub {
 	font-size: 3.5rem;
+}
+
+.value.mini {
+	font-size: 2.5rem;
 }
 
 .unit {
