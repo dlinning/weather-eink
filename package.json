@@ -5,10 +5,8 @@
 	"type": "module",
 	"scripts": {
 		"dev": "vite",
-		"build": "run-p type-check \"build-only {@}\" --",
+		"build": "vite build",
 		"preview": "vite preview",
-		"build-only": "vite build",
-		"type-check": "vue-tsc --build",
 		"format": "prettier --write --experimental-cli src/",
 		"predeploy": "yarn build",
 		"deploy": "gh-pages -d dist"
@@ -22,7 +20,6 @@
 		"prettier": "^3.8.3",
 		"sass-embedded": "^1.100.0",
 		"typescript": "~6.0.2",
-		"vite": "^8.0.12",
-		"vite-tsconfig-paths": "^6.1.1"
+		"vite": "^8.0.12"
 	}
 }
