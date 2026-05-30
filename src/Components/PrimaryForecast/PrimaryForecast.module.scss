@@ -1,0 +1,18 @@
+.root {
+	display: flex;
+	flex-flow: row nowrap;
+	gap: 0.5rem;
+	justify-content: space-evenly;
+}
+
+.col {
+	display: flex;
+	flex-flow: column;
+	gap: 0.5rem;
+}
+
+.row {
+	display: flex;
+	flex-flow: row nowrap;
+	gap: 0.5rem;
+}

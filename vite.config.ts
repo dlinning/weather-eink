@@ -1,17 +1,7 @@
-import { fileURLToPath, URL } from "node:url";
-
-import vue from "@vitejs/plugin-vue";
-import vueJsx from "@vitejs/plugin-vue-jsx";
 import { defineConfig } from "vite";
-import vueDevTools from "vite-plugin-vue-devtools";
+import preact from "@preact/preset-vite";
+import tsconfigPaths from "vite-tsconfig-paths"; // 1. Import it
 
-// https://vite.dev/config/
 export default defineConfig({
-	// base: "/weather-eink/",
-	plugins: [vue(), vueJsx(), vueDevTools()],
-	resolve: {
-		alias: {
-			"@": fileURLToPath(new URL("./src", import.meta.url))
-		}
-	}
+	plugins: [preact(), tsconfigPaths()]
 });

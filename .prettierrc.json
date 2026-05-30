@@ -1,9 +1,10 @@
 {
-  "$schema": "https://json.schemastore.org/prettierrc",
-  "semi": true,
-  "printWidth": 120,
-  "singleQuote": false,
-  "jsxSingleQuote": false,
-  "useTabs": true,
-  "trailingComma": "none"
+	"$schema": "https://json.schemastore.org/prettierrc",
+	"semi": true,
+	"printWidth": 100,
+	"singleQuote": false,
+	"jsxSingleQuote": false,
+	"endOfLine": "lf",
+	"useTabs": true,
+	"trailingComma": "none"
 }

@@ -1,18 +1,13 @@
-<script setup lang="ts">
-</script>
+.overlay {
+	z-index: 5;
 
-<template>
-	<div class="root">
-		<div class="spinner"></div>
-	</div>
-</template>
-
-<style scoped>
-.root {
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	height: 100%;
+	width: 100%;
+
+	background-color: #fff;
 }
 
 .spinner {
@@ -22,10 +17,13 @@
 	border-top-color: #333;
 	border-radius: 50%;
 	animation: spin 5s linear infinite;
-}
-@keyframes spin {
-	to {
-		transform: rotate(360deg);
+
+	@keyframes spin {
+		to {
+			transform: rotate(360deg);
+		}
 	}
 }
-</style>
+
+.message {
+}
