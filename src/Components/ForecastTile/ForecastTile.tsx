@@ -10,14 +10,18 @@ interface ForecastTileProps {
 
 const ForecastTile = ({ item }: ForecastTileProps) => {
 	return (
-		<div className={styles.tile}>
+		<div className={`${styles.tile} flex-col`}>
 			<div className={styles.label}>{item.label}</div>
 
-			<WeatherConditionIcon codeAndDay={item} size="2rem" />
+			<WeatherConditionIcon codeAndDay={item} className={styles.icon} />
 
 			<div className={styles.value}>{item.feelsLikeTemp}°</div>
 
-			{item.precipPercent > 0 && <span className={styles.subValue}>{item.precipPercent}%</span>}
+			<div className={`${styles.subWrap} flex-row jcc`}>
+				{item.precipPercent > 0 && <span className={styles.subValue}>{item.precipPercent}%</span>}
+
+				{item.uvIndex > 2 && <span className={styles.subValue}>UV {item.uvIndex}</span>}
+			</div>
 		</div>
 	);
 };

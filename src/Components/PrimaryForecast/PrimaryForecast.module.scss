@@ -1,18 +1,74 @@
 .root {
 	display: flex;
 	flex-flow: row nowrap;
-	gap: 0.5rem;
-	justify-content: space-evenly;
+
+	align-items: center;
+	gap: 1rem;
 }
 
-.col {
+.conditionIcon img {
+	width: 8rem;
+}
+
+.itemsWrap {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 0.5rem;
+
+	width: 100%;
+}
+
+.item {
 	display: flex;
 	flex-flow: column;
-	gap: 0.5rem;
+
+	font-weight: bold;
+
+	border: 1px solid #eee;
+	padding: 0.25rem;
 }
 
-.row {
+.label {
+	line-height: 1.2;
+	font-size: 1rem;
+	opacity: 0.7;
+}
+
+.value {
+	// Ensure content is always at the bottom right,
+	// regardless of size of other cells in the row
+	flex-grow: 1;
 	display: flex;
-	flex-flow: row nowrap;
-	gap: 0.5rem;
+	justify-content: flex-end;
+	align-items: flex-end;
+
+	gap: 0.2rem;
+
+	position: relative;
+
+	font-size: 4.5rem;
+	line-height: 0.9;
+}
+
+.unit {
+	font-size: 0.45em;
+	opacity: 0.6;
+
+	margin-bottom: 0.1em;
+
+	&Sup {
+		transform: translateY(-0.7em);
+	}
+}
+
+// Sizing overrides
+.itemSecondary {
+	.label {
+		font-size: 0.8rem;
+	}
+
+	.value {
+		font-size: 3.5rem;
+		opacity: 0.8;
+	}
 }

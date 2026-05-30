@@ -15,7 +15,7 @@ const ForecastTileList = () => {
 	return (
 		<div className={styles.tileListRoot}>
 			{shownHours.map((hour) => (
-				<ForecastTile key={hour.dateTime} item={hour} />
+				<ForecastTile key={hour.time} item={hour} />
 			))}
 		</div>
 	);

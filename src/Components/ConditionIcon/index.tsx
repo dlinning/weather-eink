@@ -1,6 +1,5 @@
 import { weatherCodeToIcon } from "@/mappers/weather-code-to-icon";
 import type { ForecastItem } from "@/types/meteo-api";
-import type { CSSProperties } from "preact";
 import { useMemo } from "preact/hooks";
 import styles from "./ConditionIcon.module.scss";
 
@@ -11,11 +10,11 @@ interface WeatherConditionIconProps {
 	 */
 	codeAndDay: Pick<ForecastItem, "code" | "isDay">;
 
-	size: CSSProperties["width"];
+	className?: string;
 }
 //#endregion Interface Declaration
 
-const WeatherConditionIcon = ({ codeAndDay, size }: WeatherConditionIconProps) => {
+const WeatherConditionIcon = ({ codeAndDay, className }: WeatherConditionIconProps) => {
 	//#region State
 	const iconUrl = useMemo<string>(() => {
 		return weatherCodeToIcon(codeAndDay.code, codeAndDay.isDay);
@@ -24,7 +23,7 @@ const WeatherConditionIcon = ({ codeAndDay, size }: WeatherConditionIconProps) =
 
 	//#region Returns
 	return (
-		<div className={styles.iconRoot} style={{ width: size }}>
+		<div className={`${styles.iconRoot} ${className ?? ""}`}>
 			<img src={`/icons/${iconUrl}`} className={styles.icon} />
 		</div>
 	);

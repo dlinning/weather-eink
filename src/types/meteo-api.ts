@@ -1,4 +1,4 @@
-import type { MeteoDateString, MeteoDateTime, MeteoWeatherCodes } from "@/types/string-types";
+import type { MeteoDateTime, MeteoWeatherCodes } from "@/types/string-types";
 
 /**
  * UI representation of an Hourly forecast record
@@ -26,8 +26,6 @@ export interface OpenMeteoResult {
 	current: CurrentWeatherFields;
 	forecast: ForecastItem[];
 	timezone?: string;
-
-	daily: MeteoRawResponse["daily"];
 
 	error?: null;
 }
@@ -60,13 +58,5 @@ export interface MeteoRawResponse {
 		apparent_temperature: number[];
 		precipitation_probability: number[];
 		weather_code: MeteoWeatherCodes[];
-	};
-	daily: {
-		time: MeteoDateString[];
-		sunrise: MeteoDateTime[];
-		sunset: MeteoDateTime[];
-
-		uv_index_max: number[];
-		uv_index_clear_sky_max: number[];
 	};
 }

@@ -1,17 +1,11 @@
-import ForecastTileList from "@/Components/ForecastTile/ForecastTileList";
-import PrimaryForecast from "@/Components/PrimaryForecast";
-import Ticker_MetaInfo from "@/Components/TickerBars/MetaInfo";
+import MainLayout from "@/Components/MainLayout";
 import AppContextStack from "@/Contexts/ContextStack";
 import { render } from "preact";
 
 function App() {
 	return (
 		<AppContextStack>
-			<Ticker_MetaInfo />
-
-			<PrimaryForecast />
-
-			<ForecastTileList />
+			<MainLayout />
 		</AppContextStack>
 	);
 }

@@ -4,7 +4,7 @@
  * @param degree Degrees from 0 to 360. If missing, returns "N/A".
  * @returns Cardinal direction (e.g. "N", "NE", "E", etc.) or "N/A" when input is not a number.
  */
-export function windDirectionToString(degree: number | undefined | null): string {
+export function WindDirectionToString(degree: number | undefined | null): string {
 	if (degree === null || degree === undefined) return "N/A";
 
 	const normalizedDegree = degree % 360;

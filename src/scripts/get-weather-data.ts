@@ -1,4 +1,4 @@
-import { windDirectionToString } from "@/mappers/wind-direction-to-string";
+import { WindDirectionToString } from "@/mappers/wind-direction-to-string";
 import type { IGeoData } from "@/types/app-ctx";
 import type {
 	CurrentWeatherFields,
@@ -28,8 +28,7 @@ export async function FetchOpenMeteoWeather({
 		longitude,
 		hourly: "is_day,apparent_temperature,precipitation_probability,uv_index,weather_code",
 		current:
-			"is_day,temperature_2m,apparent_temperature,wind_speed_10m,wind_direction_10m,relative_humidity_2m,precipitation,weather_code",
-		daily: "sunrise,sunset",
+			"is_day,temperature_2m,apparent_temperature,wind_speed_10m,wind_direction_10m,relative_humidity_2m,precipitation,weather_code,uv_index",
 		// Get the client's timezone
 		timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
 		forecast_days: "2",
@@ -37,11 +36,6 @@ export async function FetchOpenMeteoWeather({
 		temperature_unit: "fahrenheit",
 		precipitation_unit: "inch"
 	});
-
-	//https://api.open-meteo.com/v1/forecast?latitude=42.5629869&longitude=-87.9425408
-	// &daily=sunrise,sunset,uv_index_max,uv_index_clear_sky_max
-	// &hourly=temperature_2m,uv_index,is_day,precipitation_probability,weather_code
-	// &current=temperature_2m,apparent_temperature,is_day,wind_speed_10m,wind_direction_10m,weather_code,precipitation
 
 	try {
 		const response = await fetch(`${url}?${params.toString()}`, {
@@ -76,7 +70,7 @@ export async function FetchOpenMeteoWeather({
 			realTemp: Math.round(current.temperature_2m),
 			humidity: Math.round(current.relative_humidity_2m),
 			windSpeed: Math.round(current.wind_speed_10m),
-			windDir: windDirectionToString(current.wind_direction_10m),
+			windDir: WindDirectionToString(current.wind_direction_10m),
 			feelsLikeTemp: Math.round(current.apparent_temperature),
 			precipPercent: precipAsOneDecimal <= 0.1 ? 0 : precipAsOneDecimal
 		};
@@ -115,8 +109,7 @@ export async function FetchOpenMeteoWeather({
 		var asResult: OpenMeteoResult = {
 			current: currentAttrs,
 			forecast: hourlyForecast,
-			timezone: data.timezone,
-			daily: data.daily
+			timezone: data.timezone
 		};
 
 		// Cache for future loads
