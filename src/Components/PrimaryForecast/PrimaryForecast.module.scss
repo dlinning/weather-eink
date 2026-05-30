@@ -13,7 +13,7 @@
 .itemsWrap {
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);
-	gap: 0.5rem;
+	gap: 1rem;
 
 	width: 100%;
 }
@@ -51,8 +51,8 @@
 }
 
 .unit {
-	font-size: 0.45em;
-	opacity: 0.6;
+	font-size: 1.5rem;
+	opacity: 0.7;
 
 	margin-bottom: 0.1em;
 
@@ -63,12 +63,7 @@
 
 // Sizing overrides
 .itemSecondary {
-	.label {
-		font-size: 0.8rem;
-	}
-
 	.value {
 		font-size: 3.5rem;
-		opacity: 0.8;
 	}
 }

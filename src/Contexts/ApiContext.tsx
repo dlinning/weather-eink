@@ -64,7 +64,7 @@ export const ProvideApi = ({ children }: PropsWithChildren) => {
 			{Api.isLoading == false && (
 				<>
 					<ErrorOverlay />
-					{children}
+					{Api.userGeo != null && children}
 				</>
 			)}
 		</ApiContext.Provider>
