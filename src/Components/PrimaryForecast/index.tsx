@@ -52,7 +52,7 @@ const PrimaryForecast = () => {
 			{
 				label: "Precip",
 				// High enough chance of rain to care
-				isSecondary: current.precipPercent >= 10,
+				isSecondary: current.precipPercent <= 10,
 				value: current.precipPercent,
 				unit: "%"
 			},
